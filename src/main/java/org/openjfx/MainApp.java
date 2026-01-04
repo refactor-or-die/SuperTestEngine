@@ -6,17 +6,51 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
+import javafx.scene.input.KeyEvent;
+
+
+import org.openjfx.editorBackend.Backend;
+import org.openjfx.editorBackend.SaveNoMarkdown;
+
+import java.nio.file.Path;
+
 
 public class MainApp extends Application {
 
+    private static MainApp singleton;
+    public MainApp() { singleton = this; }
+    public static MainApp getSingleton() { return singleton; }
+
+    private Backend backend = new Backend();
+
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(getClass().getResource("scene.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("editor.fxml"));
 
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        stage.setTitle("JavaFX and Gradle");
+        /*
+        TODO: this will have to be under its own Command, but at least I checked how to add
+        shortcuts and that different SaveStrategies can work (for now it's Ctrl+T to change to
+        SaveNoMarkdown)
+         */
+        KeyCombination keyCombination = new KeyCodeCombination(
+                KeyCode.T,
+                KeyCombination.CONTROL_DOWN
+        );
+
+        scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+            if (keyCombination.match(event)) {
+                backend.setSaveStrategy(new SaveNoMarkdown(Path.of("test.txt")));
+                event.consume();
+            }
+        });
+
+        stage.setTitle("Super Text Engine");
         stage.setScene(scene);
         stage.show();
     }
@@ -25,4 +59,7 @@ public class MainApp extends Application {
         launch(args);
     }
 
+    public Backend getBackend() {
+        return backend;
+    }
 }
