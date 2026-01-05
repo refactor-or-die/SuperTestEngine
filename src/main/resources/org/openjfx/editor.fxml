@@ -10,9 +10,19 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.openjfx.EditorController"
             prefHeight="600.0" prefWidth="800.0">
-    <center>
-        <TextArea fx:id="editingArea">
+    <top>
+        <MenuBar BorderPane.alignment="CENTER">
+            <Menu text="File">
+                <MenuItem text="Save" onAction="#onSave" />
+                <MenuItem text="Load" onAction="#onLoad" />
+            </Menu>
 
-        </TextArea>
+            <Menu text="Help">
+                <MenuItem text="About" onAction="#onAbout" />
+            </Menu>
+        </MenuBar>
+    </top>
+    <center>
+        <TextArea fx:id="editingArea"/>
     </center>
 </BorderPane>

@@ -12,11 +12,10 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 
-import org.openjfx.editorBackend.DocumentEditor;
-import org.openjfx.editorBackend.ESaveStrategies;
-import org.openjfx.editorBackend.FileManager;
+import org.openjfx.editorBackend.*;
 
 import java.nio.file.Path;
+import java.security.Key;
 
 
 public class MainApp extends Application {
@@ -40,16 +39,36 @@ public class MainApp extends Application {
         shortcuts and that different SaveStrategies can work (for now it's Ctrl+T to change to
         SaveNoMarkdown)
          */
-        KeyCombination keyCombination = new KeyCodeCombination(
-                KeyCode.T,
+
+
+
+        KeyCombination setNoMarkdown = new KeyCodeCombination(
+                KeyCode.N,
+                KeyCombination.CONTROL_DOWN
+        );
+
+        KeyCombination setLossless = new KeyCodeCombination(
+                KeyCode.L,
+                KeyCombination.CONTROL_DOWN
+        );
+
+        KeyCombination copy = new KeyCodeCombination(
+                KeyCode.C,
                 KeyCombination.CONTROL_DOWN
         );
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
-            if (keyCombination.match(event)) {
-                fileManager.setSaveStrategy(ESaveStrategies.NO_MARKDOWN.create());
-                fileManager.save(documentEditor.getDocument(), Path.of("test.txt"));
+            if (setNoMarkdown.match(event)) {
+                fileManager.setSaveStrategy(ESaveStrategies.NO_MARKDOWN);
+                //fileManager.save(documentEditor.getDocument(), Path.of("test.txt"));
                 event.consume();
+            }
+            else if (setLossless.match(event)) {
+                fileManager.setSaveStrategy(ESaveStrategies.LOSSLESS);
+                event.consume();
+            }
+            else if (copy.match(event)) {
+                
             }
         });
 
