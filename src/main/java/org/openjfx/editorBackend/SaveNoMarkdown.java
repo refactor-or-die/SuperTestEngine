@@ -4,24 +4,13 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 import java.util.stream.Collectors;
 
 public class SaveNoMarkdown implements SaveStrategy {
-    private Path filePath;
-
-    public SaveNoMarkdown(Path filePath) {
-        this.filePath = filePath;
-    }
-
-    public void setFilePath(Path filePath) {
-        this.filePath = filePath;
-    }
-
-    public void save(List<String> content) {
+    public void save(Document document, Path filePath) {
         try {
             Files.write(filePath,
-                    content.stream()
+                    document.getContent().stream()
                            .map(line -> line.replace("#", ""))
                            .collect(Collectors.toList()),
                     StandardCharsets.UTF_8);

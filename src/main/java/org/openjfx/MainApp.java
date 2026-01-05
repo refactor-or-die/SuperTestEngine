@@ -12,8 +12,9 @@ import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 
 
-import org.openjfx.editorBackend.Backend;
-import org.openjfx.editorBackend.SaveNoMarkdown;
+import org.openjfx.editorBackend.DocumentEditor;
+import org.openjfx.editorBackend.ESaveStrategies;
+import org.openjfx.editorBackend.FileManager;
 
 import java.nio.file.Path;
 
@@ -24,7 +25,8 @@ public class MainApp extends Application {
     public MainApp() { singleton = this; }
     public static MainApp getSingleton() { return singleton; }
 
-    private Backend backend = new Backend();
+    private final DocumentEditor documentEditor = new DocumentEditor();
+    private final FileManager fileManager = new FileManager();
 
     @Override
     public void start(Stage stage) throws Exception {
@@ -45,7 +47,8 @@ public class MainApp extends Application {
 
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (keyCombination.match(event)) {
-                backend.setSaveStrategy(new SaveNoMarkdown(Path.of("test.txt")));
+                fileManager.setSaveStrategy(ESaveStrategies.NO_MARKDOWN.create());
+                fileManager.save(documentEditor.getDocument(), Path.of("test.txt"));
                 event.consume();
             }
         });
@@ -59,7 +62,10 @@ public class MainApp extends Application {
         launch(args);
     }
 
-    public Backend getBackend() {
-        return backend;
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+    public DocumentEditor getDocumentEditor() {
+        return documentEditor;
     }
 }

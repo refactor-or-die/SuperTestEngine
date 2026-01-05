@@ -7,7 +7,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import org.openjfx.editorBackend.Document;
+import org.openjfx.editorBackend.ESaveStrategies;
 
+import java.nio.file.Path;
 import java.util.Arrays;
 
 public class EditorController {
@@ -27,7 +30,8 @@ public class EditorController {
                     );
 
                     if (saveShortcut.match(event)) {
-                        app.getBackend().save(Arrays.asList(editingArea.getText().split("\n")));
+                        app.getFileManager().setSaveStrategy(ESaveStrategies.LOSSLESS.create());
+                        app.getFileManager().save(app.getDocumentEditor().getDocument(), Path.of("test.txt"));
                         event.consume();
                     }
                 });
