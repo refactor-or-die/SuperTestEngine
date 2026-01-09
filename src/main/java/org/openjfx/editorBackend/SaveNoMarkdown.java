@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.util.stream.Collectors;
 
 public class SaveNoMarkdown implements SaveStrategy {
+
+    @Override
     public void save(Document document, Path filePath) {
         try {
             Files.write(filePath,
@@ -14,6 +16,7 @@ public class SaveNoMarkdown implements SaveStrategy {
                            .map(line -> line.replace("#", ""))
                            .collect(Collectors.toList()),
                     StandardCharsets.UTF_8);
+            Files.writeString(filePath, document.getContent2().replace("#", ""), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
