@@ -22,5 +22,4 @@ public class Document {
     public String getContent() {
         return content.get();
     }
-    //todo
 }
