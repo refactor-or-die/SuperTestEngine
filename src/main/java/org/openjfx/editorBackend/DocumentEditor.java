@@ -20,7 +20,7 @@ public class DocumentEditor {
     public void execute(Command command) {
         undoStack.push(new DocumentMemento(document.getContent()));
         redoStack.clear();
-        command.execute();
+        command.execute(document);
     }
 
     public void undo() {

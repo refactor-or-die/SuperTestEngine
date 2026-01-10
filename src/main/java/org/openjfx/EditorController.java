@@ -3,13 +3,11 @@ package org.openjfx;
 import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -67,11 +65,17 @@ public class EditorController {
                         event.consume();
                     }
                     else if (pasteShortcut.match(event)) {
-                        app.getDocumentEditor().execute(new PasteCommand(editingArea));
+                        IndexRange indexRange = editingArea.getSelection();
+                        int pasteLength = Clipboard.getSystemClipboard().getString().length();
+                        app.getDocumentEditor().execute(new PasteCommand(indexRange));
+                        editingArea.positionCaret(indexRange.getStart() + pasteLength);
                         event.consume();
                     }
                     else if (cutShortcut.match(event)) {
-                        app.getDocumentEditor().execute(new CutCommand(editingArea));
+                        IndexRange indexRange = editingArea.getSelection();
+                        app.getDocumentEditor().execute(new CutCommand(indexRange));
+                        editingArea.positionCaret(indexRange.getStart());
+                        event.consume();
                     }
                 });
             }
