@@ -9,18 +9,26 @@
 <BorderPane xmlns="http://javafx.com/javafx/8.0.171"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="org.openjfx.EditorController"
-            prefHeight="600.0" prefWidth="800.0">
+            prefHeight="600.0" prefWidth="800.0"
+            fx:id="borderPane">
     <top>
-        <MenuBar BorderPane.alignment="CENTER">
-            <Menu text="File">
-                <MenuItem text="Save" onAction="#onSave" />
-                <MenuItem text="Load" onAction="#onLoad" />
-            </Menu>
+        <AnchorPane xmlns:fx="http://javafx.com/fxml/1"
+                    styleClass="menu-bar">
+            <MenuBar AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0">
+                <Menu text="File">
+                    <MenuItem text="Save" onAction="#onSave" />
+                    <MenuItem text="Load" onAction="#onLoad" />
+                </Menu>
 
-            <Menu text="Help">
-                <MenuItem text="About" onAction="#onAbout" />
-            </Menu>
-        </MenuBar>
+                <Menu text="Help">
+                    <MenuItem text="About" onAction="#onAbout" />
+                </Menu>
+            </MenuBar>
+            <Label id="saveModeLabel"
+                   fx:id="saveModeLabel"
+                   AnchorPane.rightAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
+            </Label>
+        </AnchorPane>
     </top>
     <center>
         <TextArea fx:id="editingArea"/>

@@ -1,3 +1,7 @@
 .label {
-    -fx-text-fill: blue;
+    -fx-text-fill: black;
+}
+
+#saveModeLabel {
+    -fx-font-weight: bold
 }

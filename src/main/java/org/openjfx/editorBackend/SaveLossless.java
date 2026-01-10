@@ -15,4 +15,9 @@ public class SaveLossless implements SaveStrategy{
             e.printStackTrace();
         }
     }
+
+    @Override
+    public String toString() {
+        return "lossless";
+    }
 }

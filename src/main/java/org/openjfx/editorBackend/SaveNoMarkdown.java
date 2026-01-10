@@ -16,6 +16,9 @@ public class SaveNoMarkdown implements SaveStrategy {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "no Markdown";
+    }
 
 }
