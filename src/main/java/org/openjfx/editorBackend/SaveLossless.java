@@ -10,9 +10,14 @@ public class SaveLossless implements SaveStrategy{
     @Override
     public void save(Document document, Path filePath) {
         try {
-            Files.writeString(filePath, document.getContent2(), StandardCharsets.UTF_8);
+            Files.writeString(filePath, document.getContent(), StandardCharsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public String toString() {
+        return "lossless";
     }
 }

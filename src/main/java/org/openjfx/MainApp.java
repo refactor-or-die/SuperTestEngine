@@ -14,8 +14,6 @@ import javafx.scene.input.KeyEvent;
 
 import org.openjfx.editorBackend.*;
 
-import java.nio.file.Path;
-import java.security.Key;
 
 
 public class MainApp extends Application {
@@ -34,14 +32,6 @@ public class MainApp extends Application {
         Scene scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("styles.css").toExternalForm());
 
-        /*
-        TODO: this will have to be under its own Command, but at least I checked how to add
-        shortcuts and that different SaveStrategies can work (for now it's Ctrl+T to change to
-        SaveNoMarkdown)
-         */
-
-
-
         KeyCombination setNoMarkdown = new KeyCodeCombination(
                 KeyCode.N,
                 KeyCombination.CONTROL_DOWN
@@ -52,23 +42,14 @@ public class MainApp extends Application {
                 KeyCombination.CONTROL_DOWN
         );
 
-        KeyCombination copy = new KeyCodeCombination(
-                KeyCode.C,
-                KeyCombination.CONTROL_DOWN
-        );
-
         scene.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
             if (setNoMarkdown.match(event)) {
                 fileManager.setSaveStrategy(ESaveStrategies.NO_MARKDOWN);
-                //fileManager.save(documentEditor.getDocument(), Path.of("test.txt"));
                 event.consume();
             }
             else if (setLossless.match(event)) {
                 fileManager.setSaveStrategy(ESaveStrategies.LOSSLESS);
                 event.consume();
-            }
-            else if (copy.match(event)) {
-                
             }
         });
 

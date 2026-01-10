@@ -1,31 +1,40 @@
 package org.openjfx;
 
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.layout.BorderPane;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import org.openjfx.editorBackend.CutCommand;
-import org.openjfx.editorBackend.Document;
-import org.openjfx.editorBackend.ESaveStrategies;
 import org.openjfx.editorBackend.PasteCommand;
 
+import java.io.File;
 import java.nio.file.Path;
-import java.util.Arrays;
 
 public class EditorController {
 
     MainApp app = MainApp.getSingleton();
 
+    final FileChooser fileChooser = new FileChooser();
+
+    @FXML
+    private BorderPane borderPane;
+
     @FXML
     private TextArea editingArea;
 
-    public void initialize() {
-        editingArea.setText("am I editing anything here?");
+    @FXML
+    private Label saveModeLabel;
 
+    public void initialize() {
         KeyCombination cutShortcut = new KeyCodeCombination(
                 KeyCode.X, KeyCombination.SHORTCUT_DOWN
         );
@@ -69,16 +78,29 @@ public class EditorController {
         });
 
         editingArea.textProperty().bindBidirectional(app.getDocumentEditor().textProperty());
+        saveModeLabel.textProperty().bind(
+                Bindings.format("Save mode: %s", app.getFileManager().saveModeProperty())
+        );
     }
 
     @FXML
     private void onSave() {
-        app.getFileManager().save(app.getDocumentEditor().getDocument(), Path.of("test.txt"));
+        Stage stage = (Stage) borderPane.getScene().getWindow();
+        File saveFile = fileChooser.showSaveDialog(stage);
+        if (saveFile != null) {
+            Path savePath = saveFile.toPath();
+            app.getFileManager().save(app.getDocumentEditor().getDocument(), savePath);
+        }
     }
 
     @FXML
     private void onLoad() {
-
+        Stage stage = (Stage) borderPane.getScene().getWindow();
+        File loadFile = fileChooser.showOpenDialog(stage);
+        if (loadFile != null) {
+            Path loadPath = loadFile.toPath();
+            app.getFileManager().load(app.getDocumentEditor().getDocument(), loadPath);
+        }
     }
 
     @FXML

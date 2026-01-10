@@ -3,34 +3,24 @@ package org.openjfx.editorBackend;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 
-import java.util.LinkedList;
-import java.util.List;
-
 public class Document {
-    private List<String> content;
 
-    private final StringProperty content2electricboogaloo;
+    private final StringProperty content;
 
     public Document(){
-        content2electricboogaloo = new SimpleStringProperty("");
-        content = new LinkedList<String>();
-        content.add("#Ziemniak#");
+        content = new SimpleStringProperty("");
     }
 
     public StringProperty textProperty() {
-        return content2electricboogaloo;
+        return content;
     }
 
     public void setContent(String content) {
-        this.content2electricboogaloo.set(content);
+        this.content.set(content);
     }
 
-    public String getContent2() {
-        return content2electricboogaloo.get();
-    }
-
-    public List<String> getContent(){
-        return content;
+    public String getContent() {
+        return content.get();
     }
     //todo
 }

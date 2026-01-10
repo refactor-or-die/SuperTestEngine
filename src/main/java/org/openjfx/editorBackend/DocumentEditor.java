@@ -18,7 +18,7 @@ public class DocumentEditor {
     }
 
     public void execute(Command command) {
-        undoStack.push(new DocumentMemento(document.getContent2()));
+        undoStack.push(new DocumentMemento(document.getContent()));
         redoStack.clear();
         command.execute();
     }
@@ -26,7 +26,7 @@ public class DocumentEditor {
     public void undo() {
         if (!undoStack.isEmpty()) {
             DocumentMemento memento = undoStack.pop();
-            redoStack.push(new DocumentMemento(document.getContent2()));
+            redoStack.push(new DocumentMemento(document.getContent()));
             document.setContent(memento.getState());
         }
     }
@@ -34,7 +34,7 @@ public class DocumentEditor {
     public void redo() {
         if (!redoStack.isEmpty()) {
             DocumentMemento memento = redoStack.pop();
-            undoStack.push(new DocumentMemento(document.getContent2()));
+            undoStack.push(new DocumentMemento(document.getContent()));
             document.setContent(memento.getState());
         }
     }
