@@ -1,17 +1,26 @@
 package org.openjfx.editorBackend;
 
+import javafx.scene.control.IndexRange;
 import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
+import javafx.scene.input.ClipboardContent;
+
 
 public class CutCommand implements Command {
 
-    private final TextArea textArea;
+    private final IndexRange indexRange;
 
-    public CutCommand(TextArea textArea) {
-        this.textArea = textArea;
+    public CutCommand(IndexRange indexRange) {
+        this.indexRange = indexRange;
     }
     @Override
-    public void execute() {
-        textArea.cut();
+    public void execute(Document document) {
+        String content = document.getContent();
+        String transform = content.substring(0, indexRange.getStart()) + content.substring(indexRange.getEnd());
+        String cutout = content.substring(indexRange.getStart(), indexRange.getEnd());
+        ClipboardContent clipboardContent = new ClipboardContent();
+        clipboardContent.putString(cutout);
+        Clipboard.getSystemClipboard().setContent(clipboardContent);
+        document.setContent(transform);
     }
 }

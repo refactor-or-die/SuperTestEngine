@@ -67,11 +67,11 @@ public class EditorController {
                         event.consume();
                     }
                     else if (pasteShortcut.match(event)) {
-                        app.getDocumentEditor().execute(new PasteCommand(editingArea));
+                        app.getDocumentEditor().execute(new PasteCommand(editingArea.getSelection()));
                         event.consume();
                     }
                     else if (cutShortcut.match(event)) {
-                        app.getDocumentEditor().execute(new CutCommand(editingArea));
+                        app.getDocumentEditor().execute(new CutCommand(editingArea.getSelection()));
                     }
                 });
             }
