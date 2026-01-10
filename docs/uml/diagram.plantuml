@@ -12,11 +12,18 @@ class Document {
 ' FileManager deleguje zapis/odczyt do strategii
 ' =======================
 class FileManager {
-  -saveStrategy : SaveStrategy
-  -parseStrategy : ParseStrategy
-  +read(path) : Document
-  +save(doc : Document)
+    - SaveStrategy saveStrategy
+    - StringProperty saveModeProperty
+    - Path saveFilePath
+    + void setSaveStrategy(SaveStrategy _saveStrategy)
+    + void setSaveStrategy(ESaveStrategies saveStrategy)
+    + void setSaveFilePath(Path filePath)
+    + String getSaveFileName()
+    + void save(Document document, Path savePath)
+    + void load(Document document, Path loadPath)
+    + StringProperty saveModeProperty()
 }
+
 
 interface SaveStrategy {
   +save(doc : Document, path)
