@@ -18,4 +18,4 @@ Rzeczywisty diagram klas znajduje się w `/docs/uml/diagram.svg`.
 
 ## Implementacja
 
-Aplikacja będzie napisana za pomocą języka programowania Java i biblioteki JavaFX.
+Aplikacja została napisana za pomocą języka programowania Java i biblioteki JavaFX.
