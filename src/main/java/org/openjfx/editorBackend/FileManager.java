@@ -7,13 +7,11 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class FileManager {
     private SaveStrategy saveStrategy = new SaveLossless();
     private final StringProperty saveModeProperty = new SimpleStringProperty(saveStrategy.toString());
     private Path saveFilePath;
-    private ParseStrategy parseStrategy;
 
     public void setSaveStrategy(SaveStrategy _saveStrategy){
         saveStrategy = _saveStrategy;
@@ -24,20 +22,12 @@ public class FileManager {
         this.setSaveStrategy(saveStrategy.create());
     }
 
-    public void setParseStrategy(ParseStrategy _parseStrategy){
-        parseStrategy = _parseStrategy;
-    }
-
     public void setSaveFilePath(Path filePath) {
         saveFilePath = filePath;
     }
 
     public String getSaveFileName() {
         return saveFilePath.toString();
-    }
-
-    public Document read(Path readPath) {
-        return parseStrategy.parse(readPath);
     }
     public void save(Document document, Path savePath) {
         saveStrategy.save(document, savePath);

@@ -1,7 +1,6 @@
 package org.openjfx.editorBackend;
 
 import javafx.scene.control.IndexRange;
-import javafx.scene.control.TextArea;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
 

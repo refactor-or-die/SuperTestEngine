@@ -16,6 +16,7 @@ import org.openjfx.editorBackend.PasteCommand;
 
 import java.io.File;
 import java.nio.file.Path;
+import java.util.Optional;
 
 public class EditorController {
 
@@ -66,7 +67,8 @@ public class EditorController {
                     }
                     else if (pasteShortcut.match(event)) {
                         IndexRange indexRange = editingArea.getSelection();
-                        int pasteLength = Clipboard.getSystemClipboard().getString().length();
+                        String pasteString = Clipboard.getSystemClipboard().getString();
+                        int pasteLength = Optional.ofNullable(pasteString).map(String::length).orElse(0);
                         app.getDocumentEditor().execute(new PasteCommand(indexRange));
                         editingArea.positionCaret(indexRange.getStart() + pasteLength);
                         event.consume();
