@@ -12,32 +12,43 @@ class Document {
 ' FileManager deleguje zapis/odczyt do strategii
 ' =======================
 class FileManager {
-  -saveStrategy : SaveStrategy
-  -parseStrategy : ParseStrategy
-  +read(path) : Document
-  +save(doc : Document)
+    - SaveStrategy saveStrategy
+    - StringProperty saveModeProperty
+    - Path saveFilePath
+    + void setSaveStrategy(SaveStrategy _saveStrategy)
+    + void setSaveStrategy(ESaveStrategies saveStrategy)
+    + void setSaveFilePath(Path filePath)
+    + String getSaveFileName()
+    + void save(Document document, Path savePath)
+    + void load(Document document, Path loadPath)
+    + StringProperty saveModeProperty()
 }
+
 
 interface SaveStrategy {
   +save(doc : Document, path)
 }
 
-class TxtSave
-class MarkdownSave
+class LosslessSave
+class NoMarkdownSave
 
-SaveStrategy <|-- TxtSave
-SaveStrategy <|-- MarkdownSave
-
-interface ParseStrategy {
-  +parse(path) : Document
-}
-
-class PlainTextParse
-
-ParseStrategy <|-- PlainTextParse
+SaveStrategy <|-- LosslessSave
+SaveStrategy <|-- NoMarkdownSave
 
 FileManager --> SaveStrategy
-FileManager --> ParseStrategy
+
+enum ESaveStrategies {
+    + LOSSLESS
+    + NO_MARKDOWN
+    - Supplier<SaveStrategy> constructor
+    - String prettyName
+    + SaveStrategy create()
+    + String toString()
+}
+
+ESaveStrategies --> SaveStrategy
+ESaveStrategies --> LosslessSave
+ESaveStrategies --> NoMarkdownSave
 
 ' =======================
 ' COMMAND PATTERN
@@ -54,6 +65,7 @@ class PasteCommand
 
 Command <|-- TypeCommand
 Command <|-- DeleteCommand
+Command <|-- CopyCommand
 Command <|-- PasteCommand
 
 ' =======================
@@ -65,14 +77,16 @@ class DocumentMemento {
 }
 
 class DocumentEditor {
-  -document : Document
-  -undoStack : Stack<DocumentMemento>
-  -redoStack : Stack<DocumentMemento>
-  +execute(cmd : Command)
-  +undo()
-  +redo()
-  +createSnapshot()
-}
+        - final Document document
+        - final Stack<DocumentMemento> undoStack
+        - final Stack<DocumentMemento> redoStack
+        + DocumentEditor()
+        + Document getDocument()
+        + void execute(Command command)
+        + void undo()
+        + void redo()
+        + StringProperty textProperty()
+    }
 
 DocumentEditor --> Document
 DocumentEditor --> Command
@@ -82,11 +96,19 @@ DocumentEditor --> DocumentMemento
 ' GUI
 ' GUI wyzwala komendy, nie zna szczegółów edytora
 ' =======================
-class EditorGUI {
-  +onButtonClick()
-  +onShortcut()
-}
+ class MainApp {
+        - static MainApp singleton
+        - final DocumentEditor documentEditor
+        - final FileManager fileManager
+        + MainApp()
+        + static MainApp getSingleton()
+        + void start(Stage stage) throws Exception
+        + static void main(String[] args)
+        + FileManager getFileManager()
+        + DocumentEditor getDocumentEditor()
+    }
 
-EditorGUI --> DocumentEditor
+MainApp --> DocumentEditor
+MainApp --> FileManager
 
 @enduml

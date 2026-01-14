@@ -1,0 +1,92 @@
+@startuml
+
+' =======================
+' MODEL DANYCH
+' =======================
+class Document {
+  -content : String
+}
+
+' =======================
+' STRATEGY PATTERN
+' FileManager deleguje zapis/odczyt do strategii
+' =======================
+class FileManager {
+  -saveStrategy : SaveStrategy
+  -parseStrategy : ParseStrategy
+  +read(path) : Document
+  +save(doc : Document)
+}
+
+interface SaveStrategy {
+  +save(doc : Document, path)
+}
+
+class TxtSave
+class MarkdownSave
+
+SaveStrategy <|-- TxtSave
+SaveStrategy <|-- MarkdownSave
+
+interface ParseStrategy {
+  +parse(path) : Document
+}
+
+class PlainTextParse
+
+ParseStrategy <|-- PlainTextParse
+
+FileManager --> SaveStrategy
+FileManager --> ParseStrategy
+
+' =======================
+' COMMAND PATTERN
+' DocumentEditor jest klientem komend
+' Idealne dla GUI, toolbarów i skrótów klawiszowych
+' =======================
+interface Command {
+  +execute(doc : Document)
+}
+
+class TypeCommand
+class DeleteCommand
+class PasteCommand
+
+Command <|-- TypeCommand
+Command <|-- DeleteCommand
+Command <|-- PasteCommand
+
+' =======================
+' MEMENTO PATTERN
+' Undo/Redo przez snapshoty stanu dokumentu
+' =======================
+class DocumentMemento {
+  -state : String
+}
+
+class DocumentEditor {
+  -document : Document
+  -undoStack : Stack<DocumentMemento>
+  -redoStack : Stack<DocumentMemento>
+  +execute(cmd : Command)
+  +undo()
+  +redo()
+  +createSnapshot()
+}
+
+DocumentEditor --> Document
+DocumentEditor --> Command
+DocumentEditor --> DocumentMemento
+
+' =======================
+' GUI
+' GUI wyzwala komendy, nie zna szczegółów edytora
+' =======================
+class EditorGUI {
+  +onButtonClick()
+  +onShortcut()
+}
+
+EditorGUI --> DocumentEditor
+
+@enduml
