@@ -7,7 +7,6 @@ import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
 
 public class FileManager {
     private SaveStrategy saveStrategy = new SaveLossless();
@@ -23,7 +22,6 @@ public class FileManager {
         this.setSaveStrategy(saveStrategy.create());
     }
 
-
     public void setSaveFilePath(Path filePath) {
         saveFilePath = filePath;
     }
@@ -31,7 +29,6 @@ public class FileManager {
     public String getSaveFileName() {
         return saveFilePath.toString();
     }
-
     public void save(Document document, Path savePath) {
         saveStrategy.save(document, savePath);
     }
