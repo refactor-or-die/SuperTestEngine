@@ -59,12 +59,8 @@ interface Command {
   +execute(doc : Document)
 }
 
-class TypeCommand
-class DeleteCommand
 class PasteCommand
 
-Command <|-- TypeCommand
-Command <|-- DeleteCommand
 Command <|-- CopyCommand
 Command <|-- PasteCommand
 
@@ -110,5 +106,6 @@ DocumentEditor --> DocumentMemento
 
 MainApp --> DocumentEditor
 MainApp --> FileManager
+MainApp --> ESaveStrategies
 
 @enduml
